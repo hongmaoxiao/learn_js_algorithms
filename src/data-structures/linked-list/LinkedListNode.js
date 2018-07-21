@@ -8,4 +8,3 @@ export default class LinkedListNode {
     return callback ? callback(this.value) : `${this.value}`;
   }
 }
-

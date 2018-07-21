@@ -93,7 +93,7 @@ export default class LinkedList {
    */
   find({
     value = null,
-    callback = undefined
+    callback = undefined,
   }) {
     if (!this.head) {
       return null;
@@ -154,7 +154,7 @@ export default class LinkedList {
       return null;
     }
 
-    let deleteHead = this.head;
+    const deleteHead = this.head;
 
     if (this.head.next) {
       this.head = this.head.next;
@@ -189,4 +189,3 @@ export default class LinkedList {
     return this.toArray().map(node => node.toString(callback)).toString();
   }
 }
-
