@@ -53,5 +53,76 @@ export default class MinHeap {
   peek() {
     return (this.heapContainer.length && this.heapContainer[0]) || null;
   }
+
+  poll() {
+    if (this.heapContainer.length === 0) {
+      return null;
+    }
+
+    if (this.heapContainer.length === 1) {
+      return this.heapContainer.pop();
+    }
+
+    const item = this.heapContainer[0];
+
+    this.heapContainer[0] = this.heapContainer.pop();
+    this.heapifyDown();
+
+    return item;
+  }
+
+  add(item) {
+    this.heapContainer.push(item);
+    this.heapifyUp();
+    return this;
+  }
+
+  heapifyUp(customStartIndex) {
+    let currentIndex = customStartIndex || this.heapContainer.length - 1;
+
+    while(this.hasParent(currentIndex) && this.compare.lessThan(this.heapContainer[currentIndex], this.parent[currentIndex])) {
+      this.swap(currentIndex, this.getParentIndex(currentIndex));
+      currentIndex = this.getParentIndex(currentIndex);
+    }
+  }
+
+  heapifyDown(customStartIndex) {
+    let currentIndex = customStartIndex || 0;
+
+    while(this.hasRightChild(currentIndex) && this.compare.greaterThan(this.heapContainer[currentIndex], this.heapContainer[this.getRightChildIndex(currentIndex)])) {
+      this.swap(currentIndex, this.getRightChildIndex(currentIndex));
+      currentIndex = this.getRightChildIndex(currentIndex);
+    }
+
+    while(this.hasLeftChild(currentIndex) && this.compare.greaterThan(this.heapContainer[currentIndex], this.heapContainer[this.getLeftChildIndex(currentIndex)])) {
+      this.swap(currentIndex, this.getLeftChildIndex(currentIndex));
+      currentIndex = this.getLeftChildIndex(currentIndex);
+    }
+
+    let nextIndex = null;
+
+    while(this.hasLeftChild(currentIndex)) {
+      if (this.hasRightChild(currentIndex) && this.compare.lessThan(this.rightChild(currentIndex), this.leftChild(currentIndex))) {
+        nextIndex = this.getRightChildIndex(currentIndex);
+      } else {
+        nextIndex = this.getLeftChildIndex(currentIndex);
+      }
+
+      if (this.compare.lessThan(this.heapContainer[currentIndex], this.heapContainer[nextIndex])) {
+        break;
+      }
+
+      this.swap(currentIndex, nextIndex);
+      currentIndex = nextIndex;
+    }
+  }
+
+  isEmpty() {
+    return !this.heapContainer.length;
+  }
+
+  toString() {
+    return this.heapContainer.toString();
+  }
 }
 
